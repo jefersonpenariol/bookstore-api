@@ -11,31 +11,38 @@ import br.com.jeferson.bookstore.repositories.CategoriaRepository;
 import br.com.jeferson.bookstore.repositories.LivroRepository;
 
 @SpringBootApplication
-public class BookstoreApplication implements CommandLineRunner{
+public class BookstoreApplication implements CommandLineRunner {
+	private Categoria categoria = new Categoria();
+	private Livro livro = new Livro();
 
 	@Autowired
 	CategoriaRepository categoriaRepository;
-	
+
 	@Autowired
 	LivroRepository livroRepository;
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(BookstoreApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		Categoria categoria = new Categoria();
+		this.createCategoria();
+		this.createLivro();
+	}
+
+	private void createCategoria() {
 		categoria.setNome("Informática");
 		categoria.setDescricao("Livros de Informática");
-		
-		Livro livro = new Livro();
+		categoriaRepository.save(categoria);
+	}
+
+	private void createLivro() {
 		livro.setTitulo("Dando Reset no Computador");
 		livro.setNomeAutor("Não existe");
 		livro.setTexto("");
 		livro.setCategoria(categoria);
-		
-		categoriaRepository.save(categoria);
+
 		livroRepository.save(livro);
 	}
 }

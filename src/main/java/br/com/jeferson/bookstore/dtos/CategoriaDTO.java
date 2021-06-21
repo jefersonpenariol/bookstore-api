@@ -4,14 +4,18 @@ import java.io.Serializable;
 
 import br.com.jeferson.bookstore.domain.Categoria;
 
-public class CategoriaDTO implements Serializable{
+public class CategoriaDTO implements Serializable {
 
-	private static final long serialVersionUID = 1L;	
-	
+	private static final long serialVersionUID = 1L;
+
 	private Integer id;
 	private String nome;
 	private String descricao;
-	
+
+	public CategoriaDTO() {
+		super();
+	}
+
 	public CategoriaDTO(Categoria categoria) {
 		super();
 		this.id = categoria.getId();
@@ -66,8 +70,6 @@ public class CategoriaDTO implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}	
+	}
 
-	
-	
 }

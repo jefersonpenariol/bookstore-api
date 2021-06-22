@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.jeferson.bookstore.domain.Categoria;
 import br.com.jeferson.bookstore.domain.Livro;
+import br.com.jeferson.bookstore.dtos.LivroDTO;
 import br.com.jeferson.bookstore.exceptions.ObjectNotFoundException;
 import br.com.jeferson.bookstore.repositories.LivroRepository;
 
@@ -32,5 +33,12 @@ public class LivroService {
 	public List<Livro> findAll(Integer idCategoria) {
 		Categoria categoria = categoriaService.findById(idCategoria);
 		return livroRepository.findAllByCategoria(categoria);
+	}
+
+	public Livro update(Integer id, LivroDTO livroDTO) {
+		Livro livroUpToDate = this.findById(id);
+		livroUpToDate.setTitulo(livroDTO.getTitulo());
+
+		return livroRepository.save(livroUpToDate);
 	}
 }

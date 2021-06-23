@@ -2,6 +2,10 @@ package br.com.jeferson.bookstore.dtos;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
 import br.com.jeferson.bookstore.domain.Livro;
 
 public class LivroDTO implements Serializable {
@@ -9,8 +13,14 @@ public class LivroDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
+	
+	@NotEmpty(message = "Campo Título é requerido!")
 	private String titulo;
+	
+	@NotEmpty(message = "Campo Nome do Autor é requerido!")
+	@Length(min = 2, max = 100, message = "Campo Nome do Autor deve ter no mínimo 3 e máximo 100 caracteres.")
 	private String nomeAutor;
+	
 	private String texto;
 
 	public LivroDTO() {

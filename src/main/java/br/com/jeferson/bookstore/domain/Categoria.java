@@ -13,6 +13,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name="CATEGORIA")
@@ -23,10 +26,16 @@ public class Categoria implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "NOME")
+	
+	@Column(name = "NOME", nullable = false)
+	@NotEmpty(message = "Campo nome requerido!")
+	@Length(min = 2, max = 100, message = "Campo nome deve ter no mínimo 3 e máximo 100 caracteres.")
 	private String nome;
+	
 	@Column(name = "DESCRICAO")
-	private String descricao;	
+	@Length(min = 2, max = 200, message = "Campo descrição deve ter no mínimo 3 e máximo 200 caracteres.")
+	private String descricao;
+	
 	@OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Livro> livros =  new ArrayList<>();
 	

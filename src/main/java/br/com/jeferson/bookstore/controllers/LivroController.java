@@ -4,8 +4,11 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,6 +25,7 @@ import br.com.jeferson.bookstore.domain.Livro;
 import br.com.jeferson.bookstore.dtos.LivroDTO;
 import br.com.jeferson.bookstore.service.LivroService;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/livros")
 public class LivroController {
@@ -44,20 +48,20 @@ public class LivroController {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<LivroDTO> updateLivro(@PathVariable Integer id, @RequestBody LivroDTO livroDTO) {
+	public ResponseEntity<LivroDTO> updateLivro(@PathVariable Integer id, @Valid  @RequestBody LivroDTO livroDTO) {
 		Livro livroUpToDate = livroService.update(id, livroDTO);
 		return ResponseEntity.ok().body(new LivroDTO(livroUpToDate));
 	}
 
 	@PatchMapping(value = "/{id}")
-	public ResponseEntity<LivroDTO> updateLivroPatch(@PathVariable Integer id, @RequestBody LivroDTO livroDTO) {
+	public ResponseEntity<LivroDTO> updateLivroPatch(@Valid @PathVariable Integer id, @Valid @RequestBody LivroDTO livroDTO) {
 		Livro livroUpToDate = livroService.update(id, livroDTO);
 		return ResponseEntity.ok().body(new LivroDTO(livroUpToDate));
 	}
 
 	@PostMapping
-	public ResponseEntity<Livro> createLivro(
-			@RequestParam(value = "id_categoria", defaultValue = "0") Integer idCategoria, @RequestBody Livro livro) {
+	public ResponseEntity<Livro> createLivro(@Valid
+			@RequestParam(value = "id_categoria", defaultValue = "0") Integer idCategoria, @Valid @RequestBody Livro livro) {
 		Livro newLivro = livroService.createLivro(idCategoria, livro);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newLivro.getId()).toUri();
 		return ResponseEntity.created(uri).body(newLivro);

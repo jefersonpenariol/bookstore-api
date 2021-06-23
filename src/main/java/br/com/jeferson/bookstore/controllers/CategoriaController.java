@@ -4,8 +4,11 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +23,7 @@ import br.com.jeferson.bookstore.domain.Categoria;
 import br.com.jeferson.bookstore.dtos.CategoriaDTO;
 import br.com.jeferson.bookstore.service.CategoriaService;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/categorias")
 public class CategoriaController {
@@ -44,7 +48,7 @@ public class CategoriaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Categoria> createCategoria(@RequestBody Categoria categoria) {
+	public ResponseEntity<Categoria> createCategoria(@Valid @RequestBody Categoria categoria) {
 		categoria = categoriaService.createCategoria(categoria);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.getId())
 				.toUri();
@@ -53,7 +57,7 @@ public class CategoriaController {
 
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<CategoriaDTO> updateCategoria(@PathVariable Integer id,
-			@RequestBody CategoriaDTO categoriaDTO) {
+			@Valid @RequestBody CategoriaDTO categoriaDTO) {
 		Categoria categoriaUpToDate = categoriaService.update(id, categoriaDTO);
 		return ResponseEntity.ok().body(new CategoriaDTO(categoriaUpToDate));
 	}

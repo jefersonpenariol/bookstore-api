@@ -38,7 +38,20 @@ public class LivroService {
 	public Livro update(Integer id, LivroDTO livroDTO) {
 		Livro livroUpToDate = this.findById(id);
 		livroUpToDate.setTitulo(livroDTO.getTitulo());
+		livroUpToDate.setNomeAutor(livroDTO.getNomeAutor());
+		livroUpToDate.setTexto(livroDTO.getTexto());
 
 		return livroRepository.save(livroUpToDate);
+	}
+
+	public Livro createLivro(Integer idCategoria, Livro livro) {
+		Categoria categoria = categoriaService.findById(idCategoria);
+		livro.setCategoria(categoria);
+		return livroRepository.save(livro);
+	}
+
+	public void delete(Integer id) {
+		Livro livro = this.findById(id);
+		livroRepository.delete(livro);
 	}
 }
